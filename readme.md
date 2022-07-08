@@ -1,6 +1,5 @@
 [сlass]: # (блок класса)
-<p style="text-align: center">Argument parser</p>
-===============
+# <p style="text-align: center">Argument parser</p>
 
 --------------
 
@@ -59,8 +58,7 @@
 
 
 [сlass]: # (блок класса)
-<p style="text-align: center">Argument list</p>
-===============
+# <p style="text-align: center">Argument list</p>
 
 --------------
 
