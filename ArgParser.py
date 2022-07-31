@@ -31,6 +31,11 @@ class ArgumentList:
     def __str__(self):
         return self.__repr__()
 
+    def __getattr__(self, item):
+        if item in list(self.__dict__):
+            return self.__dict__[item]
+        return False
+
     def items(self):
         return self.__dict__.items()
 
@@ -44,21 +49,31 @@ class ArgumentList:
 class ArgumentParser:
     args = ArgumentList()
     rules = {}
+    without_values = []
 
-    def __init__(self, **options):
-        self.options = options
-        _rulesLoaded = self.options.get('rules')
-        if _rulesLoaded:
-            self.rules = self.options.get('rules')
+    def __new__(cls, *opt, **options):
+        if options and len(list(options)) > 0:
+            cls.add_rule_dict(options.get('rules'))
+        elif opt and len(opt) > 0 and isinstance(opt, dict):
+            cls.add_rule_dict(opt[0])
 
     @classmethod
     @lru_cache()
-    def parse(cls, args_list=None) -> ArgumentList:
+    def parse(cls, args_list=None, prefix="-") -> ArgumentList:
+        _keys: list = []
+        _values: list = []
         if args_list is None:
             args_list = sys.argv
-        _arg_list = args_list
-        _keys: list = _arg_list[1::2]
-        _values: list = _arg_list[2::2]
+        args_list.pop(0)
+        for i in args_list:
+            if i.startswith(prefix):
+                _keys.append(i)
+            else:
+                _values.append(i)
+
+        for i in range(len(_keys)):
+            if _keys[i] in cls.without_values:
+                _values.insert(i, True)
         _arg_dict: dict = dict(zip(_keys, _values))
 
         for i in list(_arg_dict):
@@ -67,20 +82,19 @@ class ArgumentParser:
                     cls.args[rule] = _arg_dict[i]
                     break
             else:
-                cls.args[i.strip('-').strip()] = _arg_dict[i]
+                cls.args[i.strip(prefix).strip()] = _arg_dict[i]
         return cls.args
 
     @classmethod
-    def add_rule(cls, _flag: any, _var_name: str | None = None):
+    def add_rule(cls, _var_name: str | None = None, _flag: any = None):
         cls.rules[_var_name] = _flag
 
     @classmethod
     def add_rule_dict(cls, rules: dict):
         for k, v in rules.items():
-            cls.add_rule(v, k)
+            cls.add_rule(k, v)
 
 
 if __name__ == '__main__':
     ArgumentParser.parse()
     print(ArgumentList())
-
