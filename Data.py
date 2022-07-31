@@ -45,7 +45,3 @@ class Object(dict):
         return self.__getitem__(value)
 
 
-obj = Object({"t": 12}, a=10, b=15)
-obj.default = "kko"
-obj.extend({"e": 10})
-
