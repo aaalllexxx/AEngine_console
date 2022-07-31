@@ -45,3 +45,31 @@ class Object(dict):
         return self.__getitem__(value)
 
 
+class Chain:
+    def __init__(self, llist=None):
+        self.chicken = None
+        if llist is None:
+            llist = []
+        self.__list = llist
+
+        for i in range(len(self.__list) - 1):
+            self.__dict__[self.__list[i]] = self.__list[i + 1]
+
+        self.__dict__[self.__list[-1]] = self.__list[0]
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
+
+    def __update(self):
+        for i in range(len(self.__list) - 1):
+            self.__dict__[self.__list[i]] = self.__list[i + 1]
+
+        self.__dict__[self.__list[-1]] = self.__list[0]
+
+    def pop(self, index):
+        del self.__dict__[index]
+        self.__list.pop(self.__list.index(index))
+        self.__update()
+
+    def index(self, value):
+        return self.__list[self.__list.index(value) - 1]
