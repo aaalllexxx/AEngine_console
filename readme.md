@@ -17,10 +17,10 @@
 
 #### <p style="text-align: center; font-weight: bolder">add_rule( )</p>
 
-    ArgumentParse.add_rule(var_name, flag)
+    ArgumentParse.add_rule(flag, var_name)
     
-    ex: ArgumentParse.add_rule('MyKey', '-key'),
-        ArgumentParse.add_rule('MyKey', ['-key1', '-key2'])
+    ex: ArgumentParse.add_rule('-key', 'MyKey'),
+        ArgumentParse.add_rule(['-key1', '-key2'], 'MyKey')
 
 <div style="margin: 30px 0">
     <p><span style="color: green">var_name</span> - имя переменной, которая будет содержать значение после флага</p>
