@@ -47,7 +47,6 @@ class Object(dict):
 
 class Chain:
     def __init__(self, llist=None):
-        self.chicken = None
         if llist is None:
             llist = []
         self.__list = llist
