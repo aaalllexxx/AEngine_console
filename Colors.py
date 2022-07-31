@@ -3,6 +3,12 @@ class ColorMap:
         for k, v in color_map_dict.items():
             self.__dict__[k] = v
 
+    def __setitem__(self, key, value):
+        self.__dict__[key] = value
+
+    def __getitem__(self, item):
+        return self.__dict__["item"]
+
 
 class Color:
     def __init__(self, *args, **kwargs):
