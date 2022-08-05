@@ -1,9 +1,13 @@
+__all__ = ["Banner"]
+__path__ = __file__.split("Banner")[0]
+
+
 class BannerString:
     def __init__(self, string="", size=0):
         self.lines = ["" for _ in range(size)]
         if string:
             lines = string.split("\n")
-            self.lines[len(self.lines)-1 - len(lines)-1:len(self.lines)-1] = string.split("\n")
+            self.lines[len(self.lines) - 1 - len(lines) - 1:len(self.lines) - 1] = string.split("\n")
 
     def __add__(self, other):
         res = ''
@@ -28,7 +32,7 @@ class Banner:
         string = string.replace(" ", "_").lower()
         for letter in string:
             letter = letter.replace("_", "space")
-            with open("alphabet/" + letter, "r") as file:
+            with open(__path__ + "alphabet/" + letter, "r") as file:
                 l = file.read().strip("\n").strip("%")
             cls.__letters.append(BannerString(l, size=10))
         res = BannerString(size=10)
