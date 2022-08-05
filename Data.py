@@ -1,8 +1,4 @@
-from dataclasses import dataclass
-
-
-@dataclass
-class Object(dict):
+class Obj(dict):
     __default = None
 
     def __init__(self, *args, **kwargs):
@@ -14,6 +10,16 @@ class Object(dict):
             self.__dict__[k] = v
 
         super().__init__(self.__dict__)
+
+    def __str__(self):
+        s = ""
+        dct = self.__dict__.copy()
+        if "_Obj__default" in list(dct):
+            del dct["_Obj__default"]
+        for i in list(dct):
+            s += f"{i} => {dct[i]}, "
+        s = s[:-2]
+        return f"AEngine.Obj({s})"
 
     def __getitem__(self, item):
         try:
@@ -55,6 +61,18 @@ class Chain:
             self.__dict__[self.__list[i]] = self.__list[i + 1]
 
         self.__dict__[self.__list[-1]] = self.__list[0]
+
+    def __str__(self):
+        s = ""
+        dct = self.__dict__.copy()
+        del dct["_Chain__list"]
+        for i in list(dct):
+            s += f"{i} => {dct[i]}, "
+        s = s[:-2]
+        return f"AEngine.Chain({s})"
+
+    def __repr__(self):
+        return self.__str__()
 
     def __getitem__(self, item):
         return self.__dict__[item]
