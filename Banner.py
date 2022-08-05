@@ -4,7 +4,6 @@ class BannerString:
         if string:
             lines = string.split("\n")
             self.lines[len(self.lines)-1 - len(lines)-1:len(self.lines)-1] = string.split("\n")
-            print(len(self.lines))
 
     def __add__(self, other):
         res = ''
@@ -26,15 +25,14 @@ class Banner:
 
     @classmethod
     def from_string(cls, string):
+        string = string.replace(" ", "_").lower()
         for letter in string:
+            letter = letter.replace("_", "space")
             with open("alphabet/" + letter, "r") as file:
-                l = file.read()
+                l = file.read().strip("\n").strip("%")
             cls.__letters.append(BannerString(l, size=10))
         res = BannerString(size=10)
         for i in cls.__letters:
             res += i
 
         return str(res)
-
-
-print(Banner.from_string("abcde fg"))
