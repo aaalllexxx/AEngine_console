@@ -1,3 +1,7 @@
+from enum import Enum
+import shutil
+
+
 class Obj(dict):
     __default = None
 
@@ -90,3 +94,54 @@ class Chain:
 
     def index(self, value):
         return self.__list[self.__list.index(value) - 1]
+
+
+class Align(Enum):
+    Start = 0
+    Center = 1
+    End = 2
+
+
+class String:
+    __align = None
+
+    def __init__(self, string, align=Align.Start):
+        self.__string = string
+        self.string = string
+        self.align = align
+
+    def __center(self):
+        s = self.string.split("\n")
+        self.string = ""
+        for i in s:
+            self.string += i.center(shutil.get_terminal_size().columns)
+
+    def __left(self):
+        self.string: str = self.__string
+
+    def __right(self):
+        size = shutil.get_terminal_size().columns
+        s = self.string.split("\n")
+        self.string = ""
+        for i in s:
+            self.string += str(size * " ")[:-len(i)] + i
+
+    @property
+    def align(self):
+        return self.__align
+
+    @align.setter
+    def align(self, value):
+        aligns = {
+            Align.Start: self.__left,
+            Align.Center: self.__center,
+            Align.End: self.__right
+        }
+        aligns[value]()
+        self.__align = value
+
+    def __str__(self):
+        return self.string
+
+    def __repr__(self):
+        return self.__str__()

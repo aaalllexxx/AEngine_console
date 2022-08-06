@@ -1,3 +1,6 @@
+from AEngine.ArgParser import *
+
+
 class App:
     __banner = ""
     __description = ""
@@ -8,6 +11,10 @@ class App:
         if cls.__instances > 1:
             raise SystemError("Can not create more then one App instance")
         return super(App, cls).__new__(cls)
+
+    def __init__(self):
+        self.args = ArgumentList()
+        ArgumentParser.without_values.append("-h")
 
     def set_banner(self, banner):
         self.__banner = banner
@@ -23,5 +30,9 @@ class App:
         raise NotImplementedError("'content' method of 'App' was not implemented")
 
     def run(self):
+        ArgumentParser.parse()
+        if "h" in self.args.keys():
+            print(self.__description)
+            raise SystemExit(0)
         print(self.__banner)
         self.content()
