@@ -18,7 +18,9 @@ class ArgumentList:
         self.__setattr__(key, value)
 
     def __getitem__(self, item):
-        return self.__dict__[item]
+        if item in list(self.__dict__):
+            return self.__dict__[item]
+        return False
 
     def __repr__(self):
         endl = '\n    '

@@ -1,4 +1,5 @@
 from AEngine.ArgParser import *
+from AEngine import print
 
 
 class App:

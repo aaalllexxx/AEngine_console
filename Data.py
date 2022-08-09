@@ -105,26 +105,33 @@ class Align(Enum):
 class String:
     __align = None
 
-    def __init__(self, string, align=Align.Start):
+    def __init__(self, string, align=Align.Start, color="white"):
         self.__string = string
         self.string = string
+        self.color = color
         self.align = align
 
     def __center(self):
         s = self.string.split("\n")
         self.string = ""
+        prefix = f"[{self.color}]"
+        postfix = f"[/{self.color}]"
         for i in s:
-            self.string += i.center(shutil.get_terminal_size().columns)
+            self.string += prefix + i.center(shutil.get_terminal_size().columns) + postfix + "\n"
 
     def __left(self):
-        self.string: str = self.__string
+        prefix = f"[{self.color}]"
+        postfix = f"[/{self.color}]"
+        self.string: str = prefix +  self.__string + postfix
 
     def __right(self):
         size = shutil.get_terminal_size().columns
         s = self.string.split("\n")
         self.string = ""
+        prefix = f"[{self.color}]"
+        postfix = f"[/{self.color}]"
         for i in s:
-            self.string += str(size * " ")[:-len(i)] + i
+            self.string += prefix + str(size * " ")[:-len(i)] + i + postfix + "\n"
 
     @property
     def align(self):
@@ -144,4 +151,7 @@ class String:
         return self.string
 
     def __repr__(self):
-        return self.__str__()
+        return self.string
+
+    def __len__(self):
+        return len(self.__string)
