@@ -1,5 +1,7 @@
 from AEngine.ArgParser import *
+from AEngine.Time import Time
 from AEngine import print
+import keyboard
 
 
 class App:
@@ -24,6 +26,10 @@ class App:
         with open(filename, "r") as file:
             self.set_banner(file.read())
 
+    @staticmethod
+    def add_hotkey(hotkey, func):
+        keyboard.add_hotkey(hotkey, func)
+
     def set_description(self, description):
         self.__description = description
 
@@ -35,5 +41,14 @@ class App:
         if "h" in self.args.keys():
             print(self.__description)
             raise SystemExit(0)
-        print(self.__banner)
+        print(self.__banner) if self.__banner else "pass"
         self.content()
+
+    @staticmethod
+    def stop(status_code=0, message="", show_status_code=True):
+        Time.stop()
+        if show_status_code:
+            print(f"exit status code: {status_code}")
+        if message:
+            print(f"exit message: {message}")
+        raise SystemExit(status_code)

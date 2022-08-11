@@ -2,44 +2,45 @@ import os
 
 
 class File:
-    def __init__(self, filename):
+    def __init__(self, filename, encoding="utf-8"):
         self.filename = filename
+        self.enc = encoding
 
     def read(self):
-        with open(self.filename, 'r') as file:
+        with open(self.filename, 'r', encoding=self.enc) as file:
             return file.read()
 
     def add(self, text):
-        with open(self.filename, 'a') as file:
+        with open(self.filename, 'a', encoding=self.enc) as file:
             file.write(text)
             file.close()
 
     def create(self):
-        open(self.filename, 'w')
+        open(self.filename, 'w', encoding=self.enc)
 
 
 class FileManager:
     @staticmethod
-    def create_file(filename):
-        with open(filename, 'w') as file:
+    def create_file(filename, encoding="utf-8"):
+        with open(filename, 'w', encoding=encoding) as file:
             file.write('')
             file.close()
 
     @staticmethod
-    def add(filename, text):
-        with open(filename, 'a') as file:
+    def add(filename, text, encoding="utf-8"):
+        with open(filename, 'a', encoding=encoding) as file:
             file.write(text)
             file.close()
 
     @staticmethod
-    def rewrite(filename, text):
-        with open(filename, 'w') as file:
+    def rewrite(filename, text, encoding="utf-8"):
+        with open(filename, 'w', encoding=encoding) as file:
             file.write(text)
             file.close()
 
     @classmethod
-    def rename(cls, old_name, new_name):
-        with open(old_name, 'r') as file:
+    def rename(cls, old_name, new_name, encoding="utf-8"):
+        with open(old_name, 'r', encoding=encoding) as file:
             content = file.read()
             file.close()
 
@@ -49,8 +50,8 @@ class FileManager:
         os.remove(old_name)
 
     @staticmethod
-    def read(filename):
-        with open(filename, 'r') as file:
+    def read(filename, encoding="utf-8"):
+        with open(filename, 'r', encoding=encoding) as file:
             return file.read()
 
     @staticmethod

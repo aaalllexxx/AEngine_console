@@ -1,15 +1,15 @@
 __all__ = ["Banner"]
-__path__ = __file__.split("Banner")[0]
 
 from functools import lru_cache
+from AEngine.settings import __source_path__
 
 
 class BannerString:
     def __init__(self, string="", size=0):
-        self.lines = [" " for _ in range(size)]
+        self.lines = ["" for _ in range(size)]
         if string:
             lines = string.split("\n")
-            self.lines[len(self.lines) - len(lines):len(lines) + 1] = lines
+            self.lines[len(self.lines) - len(lines):len(self.lines)] = lines
 
     def __add__(self, other):
         res = ''
@@ -38,20 +38,33 @@ class Banner:
     __letters = []
 
     @classmethod
-    @lru_cache()
+    @lru_cache
     def from_string(cls, string):
         buffer = {}
-        string = string.replace(" ", "_").lower()
+        string = string.replace(" ", "_")
         for letter in string:
             letter = letter.replace("_", "space")
+            letter = letter.replace("*", "star")
+            letter = letter.replace(".", "dot")
+            letter = letter.replace(";", "semicolon")
+            letter = letter.replace(",", "comma")
+            letter = letter.replace("?", "question_mark")
+            letter = letter.replace("!", "exclamation_mark")
+            letter = letter.replace("&", "ampersand")
+            letter = letter.replace("/", "slash")
+            letter = letter.replace("(", "l_bracket")
+            letter = letter.replace(")", "r_bracket")
+            letter = letter.replace(":", "colon")
             if not (letter in list(buffer)):
-                with open(__path__ + "alphabet/" + letter, "r") as file:
+                if letter.isupper():
+                    letter = "_" + letter
+                with open(__source_path__ + "alphabet/" + letter, "r") as file:
                     let = file.read().strip("\n").strip("%")
                     buffer[letter] = let
             else:
                 let = buffer[letter]
-            cls.__letters.append(BannerString(let, size=5))
-        res = BannerString(size=5)
+            cls.__letters.append(BannerString(let, size=6))
+        res = BannerString(size=6)
         for i in cls.__letters:
             res += i
 
